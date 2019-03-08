@@ -1,9 +1,9 @@
 # **Project Course Correct**
 
-> Link to [FrontEnd](https://appbounjtiful.netlify.com/)
-> Link to [FrontEnd Readme](https://github.com/project-course-correct/Client)
-> Link to [Hosted backend](https://bountifful-backend.herokuapp.com/)
-> Link to [Landing Page ReadME](https://github.com/project-course-correct/Landing-Page)
+> Link to [FrontEnd](https://appbounjtiful.netlify.com/),
+> Link to [FrontEnd Readme](https://github.com/project-course-correct/Client),
+> Link to [Hosted backend](https://bountifful-backend.herokuapp.com/),
+> Link to [Landing Page ReadME](https://github.com/project-course-correct/Landing-Page),
 > Link to [Landing Page](https://github.com/project-cofrse-correct/Landing-Page)
 
 ## What is it?
