@@ -14,7 +14,8 @@ const create = async prison => {
     }).first();
 }
 
-const readAll = () => db('prisons');
+const readAll = () => db('prisons').select('id', 'location', 'population', 'zipcode');
+
 
 const readOne = id => db('prisons').select('id', 'location', 'population', 'zipcode').where({
     id
