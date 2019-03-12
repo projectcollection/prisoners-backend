@@ -39,6 +39,17 @@ const updatePrison = async (id, updates) => {
     }).first();
 };
 
+
+const destroyPrison = async id => {
+    await db('prisoners').where({
+        prison_id: id
+    }).del();
+
+    await db('prisons').where({
+        id
+    }).del();
+};
+
 module.exports = {
     readTable,
     clearTestTable,
@@ -48,5 +59,6 @@ module.exports = {
     readOne,
     readOneUnsafe,
     readPrisoners,
-    updatePrison
+    updatePrison,
+    destroyPrison
 }

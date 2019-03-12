@@ -93,7 +93,7 @@ router.get('/:id/prisoners', async (req, res) => {
 });
 
 // ** == U - Update == ** //
-router.put('/:id/update', async (req, res) => {
+router.put('/:id', async (req, res) => {
     const {
         id
     } = req.params;
@@ -144,6 +144,37 @@ router.put('/:id/update', async (req, res) => {
             });
     }
 });
+
+// ** == D - Destroy == ** //
+router.delete('/:id', async (req, res) => {
+    const {
+        id
+    } = req.params;
+
+    try {
+        let existingPrison = await db.findBy({id}).first();
+
+        if(!existingPrison){
+            res
+                .status(404)
+                .json({
+                    errorMessage: 'There is no matching prison in the DB'
+                })
+        }
+
+        await db.destroyPrison(id);
+
+        res
+            .status(200)
+            .json(`${existingPrison.location} has been deleted`)
+    } catch (err) {
+        res
+            .status(500)
+            .json({
+                errorMessage: 'Houston, we have a problem in Prisons DELETE/'
+            })
+    }
+})
 
 router.use('/', (req, res) => res.send('Welcome to the Prisons API'));
 

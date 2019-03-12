@@ -38,6 +38,9 @@ Routes thus Far
   - returns all prisoners associated with prison
   - returns error if prison does no exist or no prisoners are associated with it
 
-- *PUT* `/api/prisons/:id/update`
+- *PUT* `/api/prisons/:id`
   - does NOT require the full prison object to be submitted
   - hashes the new password if one is provided
+
+- *DELETE* `/api/prisons/:id`
+  - deletes prison with matching `id` from db
