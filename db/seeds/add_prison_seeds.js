@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 
 exports.seed = function(knex, Promise) {
   // Deletes ALL existing entries
-  return knex('prisons').del()
+  return knex('prisons').truncate()
     .then(() => {
       return bcrypt.hashSync('abcdef123456', 14);
     })

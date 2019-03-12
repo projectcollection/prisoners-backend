@@ -44,3 +44,13 @@ Routes thus Far
 
 - *DELETE* `/api/prisons/:id`
   - deletes prison with matching `id` from db
+
+
+## Prisoners
+- *GET* `/api/prisoners/`
+  - returns array with prisoner objects including:
+    - `id`: integer
+    - `name`: string
+    - `id_number`: integer
+    - `prison_id`: integer
+    - `location`: string (from prisons table)

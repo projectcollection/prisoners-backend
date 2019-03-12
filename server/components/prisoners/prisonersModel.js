@@ -14,12 +14,14 @@ const createPrisoner = async prisoner => {
     }).first();
 }
 
-const readPrisoners = () => db('prisoners');
+const readPrisoners = () => db('prisoners').join('prisons', 'prisoners.prison_id', '=', 'prisons.id').select('prisoners.*', 'prisons.location')
 
 
 const readPrisoner = id => db('prisoners').where({
     id
 }).first();
+
+const readPrison = id => db('prisons').where({id}).first();
 
 const updatePrisoner = async (id, updates) => {
     await db('prisoners').where({
@@ -43,6 +45,7 @@ module.exports = {
     createPrisoner,
     readPrisoners,
     readPrisoner,
+    readPrison,
     updatePrisoner,
     destroyPrisoner
 }
