@@ -71,6 +71,15 @@ router.post('/login', async (req, res) => {
     } = req.body;
 
     try {
+
+        if(!location || !password ){
+            res
+                .status(401)
+                .json({
+                    errorMessage: 'Please provide a location AND password to login'
+                });
+        }
+        
         let prison = await db.findBy({
             location
         }).first();
