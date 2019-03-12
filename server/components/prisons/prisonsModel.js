@@ -14,9 +14,22 @@ const create = async prison => {
     }).first();
 }
 
+const readAll = () => db('prisons');
+
+const readOne = id => db('prisons').select('id', 'location', 'population', 'zipcode').where({
+    id
+}).first();
+
+const readOneUnsafe = id => db('prisons').where({
+    id
+}).first();
+
 module.exports = {
     readTable,
     clearTestTable,
     findBy,
-    create
+    create,
+    readAll,
+    readOne,
+    readOneUnsafe
 }
