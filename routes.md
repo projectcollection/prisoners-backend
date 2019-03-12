@@ -12,9 +12,10 @@ Routes thus Far
   - Output:
     - JSON of New Prison object
       - `ID`: auto incremented
-      - `location`
-      - `population`
-      - `zipcode` if provided
+      - `location`: string
+      - `population`: integer
+      - `zipcode`: integer, if provided
+      - `prisoners`: array, if provided
 
 
 - *POST* `/api/auth/login`
@@ -32,3 +33,11 @@ Routes thus Far
 
 - *GET* `/api/prisons/:id`
   - returns specified prison
+
+- *GET* `/api/prisons/:id/prisoners`
+  - returns all prisoners associated with prison
+  - returns error if prison does no exist or no prisoners are associated with it
+
+- *PUT* `/api/prisons/:id/update`
+  - does NOT require the full prison object to be submitted
+  - hashes the new password if one is provided

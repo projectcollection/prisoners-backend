@@ -25,6 +25,20 @@ const readOneUnsafe = id => db('prisons').where({
     id
 }).first();
 
+const readPrisoners = id => db('prisoners').where({
+    prison_id: id
+});
+
+const updatePrison = async (id, updates) => {
+    await db('prisons').where({
+        id
+    }).update(updates);
+
+    return findBy({
+        id
+    }).first();
+};
+
 module.exports = {
     readTable,
     clearTestTable,
@@ -32,5 +46,7 @@ module.exports = {
     create,
     readAll,
     readOne,
-    readOneUnsafe
+    readOneUnsafe,
+    readPrisoners,
+    updatePrison
 }
