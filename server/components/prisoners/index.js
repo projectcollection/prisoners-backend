@@ -5,13 +5,30 @@ const express = require('express');
 const router = express.Router();
 const db = require('./prisonersModel');
 const skillDb = require('../skills/skillsModel');
+const {
+    adminRoute
+} = require('../auth/jwtModel');
 
 
 // Routes
+router.post('/', adminRoute, async (req, res) => {
+    try {
+
+    } catch (err) {
+        res
+            .status(500)
+            .json({
+                errorMessage: 'Houston, we have a problem'
+            });
+    }
+})
+
 // *** === R - Read === *** //
 // Read All 
 router.get('/', async (req, res) => {
     try {
+        console.log(req.decoded);
+
         let prisoners = await db.readPrisoners();
 
         console.log(prisoners)

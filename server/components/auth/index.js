@@ -87,11 +87,14 @@ router.post('/login', async (req, res) => {
         if (prison && bcrypt.compareSync(password, prison.password)) {
             const token = jwt.generateToken(prison);
 
+            prison = await db.readOne(prison.id);
+
             res
                 .status(200)
                 .json({
                     message: `Welcome ${prison.location}!, have a token...`,
-                    token
+                    token,
+                    prison
                 });
         } else {
             res
