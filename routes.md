@@ -47,6 +47,18 @@ Routes thus Far
 
 
 ## Prisoners
+- _restricted_ *POST* `api/prisoners/`
+  - Input: an object of a new prisoner
+    - `name`: string, required
+    - `id_number`: integer, unique, required
+    - `skills`: string, comma separated values
+  - Output: New Prisoner object including:
+    - `id`: auto incremented on backend
+    - `name`: string
+    - `id_number`: integer
+    - `prison_id`: assigned on back end using login info
+
+
 - *GET* `/api/prisoners/`
   - returns array with prisoner objects including:
     - `id`: integer
@@ -54,3 +66,16 @@ Routes thus Far
     - `id_number`: integer
     - `prison_id`: integer
     - `location`: string (from prisons table)
+
+- *GET* `/api/prisoners/:id`
+  - returns object of prisoner based on id
+    - `id`: integer
+    - `name`: string
+    - `id_number`: integer
+    - `prison_id`: integer
+    - `prison`: object with prison information
+      - `location`: string
+      - `population`: integer
+      - `zipcode`: integer
+    - `skills`: object of skills (if any)
+      - `name`: string
