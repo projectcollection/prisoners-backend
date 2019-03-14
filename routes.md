@@ -28,16 +28,13 @@ Routes thus Far
 
 
 ## Prisons
-- _restricted_ *GET* `/api/prisons/`
-  - can only be viewed WITHOUT token
+- *GET* `/api/prisons/`
   - returns all prisons in DB or empty array if none exist
 
-- _restricted_ *GET* `/api/prisons/:id`
-  - Prison admin can only view their prison, employers can view any prison
+- *GET* `/api/prisons/:id`
   - returns specified prison
 
-- _restricted_ *GET* `/api/prisons/:id/prisoners`
-  - Prison admin can only view their prison, employers can view any prison
+- *GET* `/api/prisons/:id/prisoners`
   - returns all prisoners associated with prison
   - returns error if prison does no exist or no prisoners are associated with it
 
@@ -98,4 +95,4 @@ Routes thus Far
   - checks for existing record in DB before deleting
   - Returns message stating "_prisoner.name_ has been successfully deleted"
 
-### individual skills can not be removed from a prisoner YET
+### *** individual skills can not be removed from a prisoner YET ***

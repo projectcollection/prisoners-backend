@@ -6,15 +6,14 @@ const bcrypt = require('bcryptjs');
 const router = express.Router();
 const db = require('./prisonsModel');
 const {
-    adminRoute,
-    adminRestrict
+    adminRoute
 } = require('../auth/jwtModel');
 
 
 // Routes
 // ** == R - Read == ** //
 // Read All
-router.get('/', adminRestrict, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const prisons = await db.readAll();
 
@@ -32,7 +31,7 @@ router.get('/', adminRestrict, async (req, res) => {
 });
 
 // Read One
-router.get('/:id', adminRestrict, async (req, res) => {
+router.get('/:id', async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -61,7 +60,7 @@ router.get('/:id', adminRestrict, async (req, res) => {
 });
 
 // Read Prisoners
-router.get('/:id/prisoners', adminRestrict, async (req, res) => {
+router.get('/:id/prisoners', async (req, res) => {
     const {
         id
     } = req.params;
@@ -97,7 +96,7 @@ router.get('/:id/prisoners', adminRestrict, async (req, res) => {
 });
 
 // ** == U - Update == ** //
-router.put('/:id', adminRoute, adminRestrict, async (req, res) => {
+router.put('/:id', adminRoute, async (req, res) => {
     const {
         id
     } = req.params;
@@ -150,7 +149,7 @@ router.put('/:id', adminRoute, adminRestrict, async (req, res) => {
 });
 
 // ** == D - Destroy == ** //
-router.delete('/:id', adminRoute, adminRestrict, async (req, res) => {
+router.delete('/:id', adminRoute, async (req, res) => {
     const {
         id
     } = req.params;
