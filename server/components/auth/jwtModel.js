@@ -45,7 +45,7 @@ const adminRestrict = (req, res, next) => {
             req.decoded = decoded;
         });
     
-        if (req.decoded.subject == req.params.id) {
+        if (req.decoded.subject == req.params.id || !req.decoded.subject) {
             console.log('yes', req.decoded.subject, req.params.id)
             next();
         } else {
@@ -55,7 +55,7 @@ const adminRestrict = (req, res, next) => {
             });
         }
     } else {
-        console.log('yes', req.decoded.subject, req.params.id)
+        console.log('yes')
         next()
     }
 }

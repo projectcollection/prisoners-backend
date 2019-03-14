@@ -126,6 +126,14 @@ router.get('/:id', async (req, res) => {
 
     try {
         let prisoner = await db.readPrisoner(id);
+
+        if(!prisoner){
+            res
+                .status(404)
+                .json({
+                    errorMessage: 'There is no matching prisoner record in the DB'
+                });
+        }
         // let prison = await db.readPrison(prisoner.prison_id)
         prisoner.prison = await db.readPrison(prisoner.prison_id);
         prisoner.skills = await db.readPrisonerSkills(id);
@@ -142,7 +150,128 @@ router.get('/:id', async (req, res) => {
                 errorMessage: 'Houston we have a problem'
             })
     }
-})
+});
+
+// *** === U - Update === *** //
+router.put('/:id', adminRoute, async(req, res) => {
+    const {
+        name,
+        id_number,
+        prison_id,
+        skills
+    } = req.body;
+    const {id} = req.params;
+
+    let updates = {};
+
+    if(name){
+        updates.name = name
+    } else if( id_number) {
+        updates.id_number = id_number
+    } else if (prison_id) {
+        updates.prison_id = prison_id
+    }
+
+    console.log(updates);
+
+    try {
+        // 1. Check for existing Prisoner
+        let existingPrisoner = await db.readPrisoner(id);
+
+        if(!existingPrisoner) {
+            res
+                .status(404)
+                .json({
+                    errorMessage: 'There is no existing Prisoner record to update'
+                });
+        }
+
+
+        db.updatePrisoner(id, updates);
+
+        if (skills) {
+            let skillsArray = await skills.split(', ').map(async skill => {
+                try {
+                    // Capitalize skill name
+                    let skillName = skill.substring(0, 1).toUpperCase() + skill.substring(1);
+
+                    // Look for existing skill
+                    let existingSkill = await skillDb.findBy({
+                        name: skillName
+                    }).first();
+
+
+                    if (existingSkill) {
+                        skill = existingSkill
+                        return skill;
+                    } else {
+                        skill = await skillDb.createSkill({
+                            name: skillName
+                        });
+
+                        return skill;
+                    }
+
+                } catch (err) {
+                    console.log('problem with skills')
+                }
+
+            });
+
+            skillsArray.forEach(skill => {
+                skill.then(skill => db.addSkills(id, skill.id)).catch(err => console.log(err));
+            });
+        }
+
+        let updatedPrisoner = await db.readPrisoner(id);
+
+        // console.log(updatedPrisoner, updatedSkills)
+
+        res
+            .status(200)
+            .json({
+                updatedPrisoner
+            });
+
+    } catch (err) {
+        res
+            .status(500)
+            .json({
+                errorMessage: 'Houston, we have a problem'
+            });
+    }
+});
+
+// *** === D - Destroy=== *** //
+
+router.delete('/:id', adminRoute, async (req, res) => {
+    const {id} = req.params;
+
+    try {
+        let existingPrisoner = await db.readPrisoner(id);
+
+        if(!existingPrisoner) {
+            res
+                .status(404)
+                .json({
+                    errorMessage: 'Please select an existing Prisoner record'
+                });
+        }
+
+        await db.destroyPrisoner(id);
+
+        res
+            .status(200)
+            .json(`${existingPrisoner.name} has successfully been deleted`)
+
+    } catch (err) {
+        res
+            .status(500)
+            .json({
+                errorMessage: 'Houston, we have a problem'
+            })
+    }
+});
 
 router.use('/', (req, res) => res.send('Welcome to the Prisoners API'));
 

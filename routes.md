@@ -28,21 +28,26 @@ Routes thus Far
 
 
 ## Prisons
-- *GET* `/api/prisons/`
+- _restricted_ *GET* `/api/prisons/`
+  - can only be viewed WITHOUT token
   - returns all prisons in DB or empty array if none exist
 
-- *GET* `/api/prisons/:id`
+- _restricted_ *GET* `/api/prisons/:id`
+  - Prison admin can only view their prison, employers can view any prison
   - returns specified prison
 
-- *GET* `/api/prisons/:id/prisoners`
+- _restricted_ *GET* `/api/prisons/:id/prisoners`
+  - Prison admin can only view their prison, employers can view any prison
   - returns all prisoners associated with prison
   - returns error if prison does no exist or no prisoners are associated with it
 
-- *PUT* `/api/prisons/:id`
+- _restricted_ *PUT* `/api/prisons/:id`
+  - Only prison admin can view their prison
   - does NOT require the full prison object to be submitted
   - hashes the new password if one is provided
 
-- *DELETE* `/api/prisons/:id`
+- _restricted_ *DELETE* `/api/prisons/:id`
+  - Only prison admin can view their prison
   - deletes prison with matching `id` from db
 
 
@@ -79,3 +84,18 @@ Routes thus Far
       - `zipcode`: integer
     - `skills`: object of skills (if any)
       - `name`: string
+
+- _restricted_ *PUT* `/api/prisoners/:id`
+  - checks for existing record in DB before updating
+  - INPUT: Accepts but does not require any of the following:
+    - `name`: string
+    - `prison_id`: integer
+    - `id_number`: intger
+    - `skills`: string of CSV
+  - OUTPUT: updated prisoner object WITHOUT skills (but skills are indeed updated)
+
+- _restricted_ *DELETE* `/api/prisoners/:id`
+  - checks for existing record in DB before deleting
+  - Returns message stating "_prisoner.name_ has been successfully deleted"
+
+### individual skills can not be removed from a prisoner YET

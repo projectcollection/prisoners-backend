@@ -44,9 +44,30 @@ const updatePrisoner = async (id, updates) => {
 };
 
 
-const destroyPrisoner = id => db('prisoners').where({
-    id
-}).del();
+const destroyPrisoner = async id => {
+    await db('prisonerSkills').where({
+        prisoner_id: id
+    }).del();
+    
+    console.log('done1');
+    
+    await db('prisoners').where({
+        id
+    }).del();
+    
+    console.log('done2');
+};
+
+const destroyPrisonerSkill = (id, skill_id) => {
+    db('prisonerSkills')
+    .where({
+        prisoner_id: id
+    })
+    .where({
+        skill_id
+    })
+    .del();
+}
 
 module.exports = {
     readTable,
@@ -59,5 +80,6 @@ module.exports = {
     readPrisonerSkills,
     readPrison,
     updatePrisoner,
-    destroyPrisoner
+    destroyPrisoner,
+    destroyPrisonerSkill
 }
