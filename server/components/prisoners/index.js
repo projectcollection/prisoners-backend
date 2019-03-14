@@ -96,7 +96,7 @@ router.post('/', adminRoute, async (req, res) => {
                 errorMessage: 'Houston, we have a problem'
             });
     }
-})
+});
 
 // *** === R - Read === *** //
 // Read All 

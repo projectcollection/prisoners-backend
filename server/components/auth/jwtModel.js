@@ -35,8 +35,33 @@ const adminRoute = (req, res, next) => {
     }
 } 
 
+const adminRestrict = (req, res, next) => {
+    const token = req.get('Authorization');
+
+    if (token) {
+        jwt.verify(token, secret, (err, decoded) => {
+            if (err) return res.status(401).json(err);
+
+            req.decoded = decoded;
+        });
+    
+        if (req.decoded.subject == req.params.id) {
+            console.log('yes', req.decoded.subject, req.params.id)
+            next();
+        } else {
+            console.log('no', req.decoded.subject, req.params.id)
+            return res.status(401).json({
+                error: 'You do not have access to this resource',
+            });
+        }
+    } else {
+        console.log('yes', req.decoded.subject, req.params.id)
+        next()
+    }
+}
 
 module.exports = {
     generateToken,
-    adminRoute
+    adminRoute,
+    adminRestrict
 }
