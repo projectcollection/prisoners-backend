@@ -8,15 +8,15 @@ exports.up = function(knex, Promise) {
             .notNullable()
             .references('id')
             .inTable('prisoners');
-
+        
         tbl
-            .integer('skill_id')
+            .string('name')
             .notNullable()
-            .references('id')
-            .inTable('skills');
+
     });
 };
 
 exports.down = function(knex, Promise) {
     return knex.schema.dropTableIfExists('prisonerSkills');
 };
+
