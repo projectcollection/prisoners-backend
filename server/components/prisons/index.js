@@ -11,131 +11,131 @@ const { adminRoute } = require("../auth/jwtModel");
 // ** == R - Read == ** //
 // Read All
 router.get("/", async (req, res) => {
-  try {
-    const prisons = await db.readAll();
+	try {
+		const prisons = await db.readAll();
 
-    res.status(200).json(prisons);
-  } catch (err) {
-    res.status(500).json({
-      errorMessage: "Houston, we hae a problem in PRISONS GET/"
-    });
-  }
+		res.status(200).json(prisons);
+	} catch (err) {
+		res.status(500).json({
+			errorMessage: "Houston, we hae a problem in PRISONS GET/"
+		});
+	}
 });
 
 // Read One
 router.get("/:id", async (req, res) => {
-  const { id } = req.params;
+	const { id } = req.params;
 
-  try {
-    let prison = await db.readOne(id);
-    let prisoners = await db.readPrisoners(id);
+	try {
+		let prison = await db.readOne(id);
+		let prisoners = await db.readPrisoners(id);
 
-    if (!prison) {
-      res.status(404).json({
-        errorMessage: "Prison does not exist in system"
-      });
-    } else {
-      prison.prisoners = prisoners;
-      res.status(200).json(prison);
-    }
-  } catch (err) {
-    res.status(500).json({
-      errorMessage: "Houston, we hae a problem in PRISONS GET/"
-    });
-  }
+		if (!prison) {
+			res.status(404).json({
+				errorMessage: "Prison does not exist in system"
+			});
+		} else {
+			prison.prisoners = prisoners;
+			res.status(200).json(prison);
+		}
+	} catch (err) {
+		res.status(500).json({
+			errorMessage: "Houston, we hae a problem in PRISONS GET/"
+		});
+	}
 });
 
 // Read Prisoners
 router.get("/:id/prisoners", async (req, res) => {
-  const { id } = req.params;
+	const { id } = req.params;
 
-  try {
-    let prison = await db.readOne(id);
-    let prisoners = await db.readPrisoners(id);
+	try {
+		let prison = await db.readOne(id);
+		let prisoners = await db.readPrisoners(id);
 
-    if (!prison) {
-      res.status(404).json({
-        errorMessage: "Prison does not exist in system"
-      });
-    } else if (!prisoners || prisoners.length === 0) {
-      res.status(404).json({
-        errorMessage: `No prisoners associated with ${prison.location}`
-      });
-    } else {
-      res.status(200).json(prisoners);
-    }
-  } catch (err) {
-    res.status(500).json({
-      errorMessage: "Houston, we hae a problem in PRISONS GET/"
-    });
-  }
+		if (!prison) {
+			res.status(404).json({
+				errorMessage: "Prison does not exist in system"
+			});
+		} else if (!prisoners || prisoners.length === 0) {
+			res.status(404).json({
+				errorMessage: `No prisoners associated with ${prison.location}`
+			});
+		} else {
+			res.status(200).json(prisoners);
+		}
+	} catch (err) {
+		res.status(500).json({
+			errorMessage: "Houston, we hae a problem in PRISONS GET/"
+		});
+	}
 });
 
 // ** == U - Update == ** //
 router.put("/:id", adminRoute, async (req, res) => {
-  const { id } = req.params;
-  const updates = req.body;
+	const { id } = req.params;
+	const updates = req.body;
 
-  try {
-    let prison = await db.readOne(id);
+	try {
+		let prison = await db.readOne(id);
 
-    if (!prison) {
-      res.status(404).json({
-        errorMessage: "There is no matching prison in the DB"
-      });
-    }
+		if (!prison) {
+			res.status(404).json({
+				errorMessage: "There is no matching prison in the DB"
+			});
+		}
 
-    if (updates.password) {
-      let hash = bcrypt.hashSync(updates.password, 14);
+		if (updates.password) {
+			let hash = bcrypt.hashSync(updates.password, 14);
 
-      updates.password = hash;
-    }
+			updates.password = hash;
+		}
 
-    if (updates.location) {
-      let existingPrison = await db
-        .findBy({
-          location: updates.location
-        })
-        .first();
+		if (updates.location) {
+			let existingPrison = await db
+				.findBy({
+					location: updates.location
+				})
+				.first();
 
-      if (existingPrison) {
-        res.status(401).json({
-          errorMessage: `${updates.location} is already in use`
-        });
-      }
-    }
+			if (existingPrison) {
+				res.status(401).json({
+					errorMessage: `${updates.location} is already in use`
+				});
+			}
+		}
 
-    let updatedPrison = await db.updatePrison(id, updates);
+		let updatedPrison = await db.updatePrison(id, updates);
 
-    res.status(200).json(updatedPrison);
-  } catch (err) {
-    res.status(500).json({
-      errorMessage: "Houston, we hae a problem in PRISONS PUT/"
-    });
-  }
+		res.status(200).json(updatedPrison);
+	} catch (err) {
+		res.status(500).json({
+			errorMessage: "Houston, we hae a problem in PRISONS PUT/"
+		});
+	}
 });
 
 // ** == D - Destroy == ** //
 router.delete("/:id", adminRoute, async (req, res) => {
-  const { id } = req.params;
+	const { id } = req.params;
 
-  try {
-    let existingPrison = await db.findBy({ id }).first();
+	try {
+		let existingPrison = await db.findBy({ id }).first();
 
-    if (!existingPrison) {
-      res.status(404).json({
-        errorMessage: "There is no matching prison in the DB"
-      });
-    }
+		if (!existingPrison) {
+			res.status(404).json({
+				errorMessage: "There is no matching prison in the DB"
+			});
+		}
 
-    await db.destroyPrison(id);
+		await db.destroyPrison(id);
 
-    res.status(200).json(`${existingPrison.location} has been deleted`);
-  } catch (err) {
-    res.status(500).json({
-      errorMessage: "Houston, we have a problem in Prisons DELETE/"
-    });
-  }
+		res.status(200).json(`${existingPrison.location} has been deleted`);
+	} catch (err) {
+		res.status(500).json({
+			errorMessage: "Houston, we have a problem in Prisons DELETE/"
+		});
+	}
 });
 
 router.use("/", (req, res) => res.send("Welcome to the Prisons API"));
