@@ -1,48 +1,53 @@
-const db = require('../../../db/dbConfig');
+const db = require("../../../db/dbConfig");
 
-const readTable = () => db('skills');
-const clearTestTable = () => db('skills').truncate();
+const readTable = () => db("prisonerSkills");
+const clearTestTable = () => db("prisonerSkills").truncate();
 
-const findBy = filter => db('skills').where(filter);
-
+const findBy = filter => db("prisonerSkills").where(filter);
 
 const createSkill = async skill => {
-    const [id] = await db('skills').insert(skill);
+  const [id] = await db("prisonerSkills").insert(skill);
 
-    return findBy({
-        id
-    }).first();
-}
-
-const readSkills = () => db('skills');
-
-
-const readSkill = id => db('skills').where({
+  return findBy({
     id
-}).first();
-
-const updateSkill = async (id, updates) => {
-    await db('skills').where({
-        id
-    }).update(updates);
-
-    return findBy({
-        id
-    }).first();
+  }).first();
 };
 
+const readSkills = () => db("prisonerSkills");
 
-const destroySkill = id => db('skills').where({
+const readSkill = id =>
+  db("prisonerSkills")
+    .where({
+      id
+    })
+    .first();
+
+const updateSkill = async (id, updates) => {
+  await db("prisonerSkills")
+    .where({
+      id
+    })
+    .update(updates);
+
+  return findBy({
     id
-}).del();
+  }).first();
+};
+
+const destroySkill = id =>
+  db("prisonerSkills")
+    .where({
+      id
+    })
+    .del();
 
 module.exports = {
-    readTable,
-    clearTestTable,
-    findBy,
-    createSkill,
-    readSkills,
-    readSkill,
-    updateSkill,
-    destroySkill
-}
+  readTable,
+  clearTestTable,
+  findBy,
+  createSkill,
+  readSkills,
+  readSkill,
+  updateSkill,
+  destroySkill
+};
